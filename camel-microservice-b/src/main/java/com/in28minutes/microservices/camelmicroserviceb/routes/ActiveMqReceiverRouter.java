@@ -2,6 +2,8 @@ package com.in28minutes.microservices.camelmicroserviceb.routes;
 
 import java.math.BigDecimal;
 
+import com.in28minutes.microservices.camelmicroserviceb.CurrencyExchange;
+
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.slf4j.Logger;
