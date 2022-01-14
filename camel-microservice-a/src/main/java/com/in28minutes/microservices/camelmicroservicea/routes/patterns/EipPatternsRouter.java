@@ -9,10 +9,15 @@ public class EipPatternsRouter extends RouteBuilder{
     @Override
     public void configure() throws Exception {
         
-        from("timer:multicast?period=1000")
+        /*from("timer:multicast?period=1000")
         .multicast()
-        .to("log:something1", "log:something2");
+        .to("log:something1", "log:something2");*/
         
+        from("file:files/csv")
+        .unmarshal()
+        .csv()
+        .split(body())
+        .to("log:split-files");
     }
     
 }
