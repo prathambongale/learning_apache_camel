@@ -27,6 +27,13 @@ public class EipPatternsRouter extends RouteBuilder{
     @Override
     public void configure() throws Exception {
         
+        // enbale tracing
+        getContext().setTracing(true);
+
+        errorHandler(deadLetterChannel("activemq:dead-letter-queue"));
+
+
+
         /*from("timer:multicast?period=1000")
         .multicast()
         .to("log:something1", "log:something2");*/
@@ -53,13 +60,14 @@ public class EipPatternsRouter extends RouteBuilder{
         .constant("My Message is Hardcoded")
 		.routingSlip(simple(routingSlip));*/
 
-        from("timer:dynamicRouting?period=10000")
+        from("timer:dynamicRouting?period={{timePeroid}}")
 		.transform()
         .constant("My Message is Hardcoded")
 		.dynamicRouter(method(dynamicRouterBean));
 
         from("direct:endpoint1")
-        .to("log:directendpoint1");
+        .wireTap("") // enitre information will be send to additional channel
+        .to("{{endpoint-for-logging}}");
 
         from("direct:endpoint2")
         .to("log:directendpoint2");
